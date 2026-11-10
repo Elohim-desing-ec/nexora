@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tema claro "marfil y oro" */
+:root { --fg: 28 25 23; --muted: 87 83 78; --bg1: #FBF7EE; --bg2: #FFFFFF; --glass: rgba(255,255,255,.72); --glass-b: rgba(120,90,20,.14); --hi: rgba(255,255,255,.95);
+  --oro: 161 120 16; --oro-viejo: 150 105 20; --bronce: 133 92 18; --champan: 138 101 8; color-scheme: light; }
+/* Tema oscuro "obsidiana y oro" */
+.dark { --fg: 250 250 249; --muted: 168 162 158; --bg1: #000000; --bg2: #0A0907; --glass: rgba(255,255,255,.035); --glass-b: rgba(212,175,55,.16); --hi: rgba(255,226,150,.12);
+  --oro: 212 175 55; --oro-viejo: 201 151 43; --bronce: 176 125 38; --champan: 243 213 138; color-scheme: dark; }
+
+html, body, #root { height: 100%; }
+body { @apply font-sans text-fg antialiased; background: linear-gradient(160deg, var(--bg1), var(--bg2)); background-attachment: fixed; }
+.tnum { font-variant-numeric: tabular-nums; }
+
+@layer components {
+  .glass { background: var(--glass); border: 1px solid var(--glass-b); box-shadow: inset 0 1px 0 var(--hi), 0 20px 50px -20px rgba(2,6,23,.45); @apply backdrop-blur-xl rounded-2xl; }
+  .glass-hover { @apply transition duration-300 hover:-translate-y-0.5; }
+  .glass-hover:hover { box-shadow: inset 0 1px 0 var(--hi), 0 0 0 1px rgba(212,175,55,.45), 0 25px 60px -20px rgba(212,175,55,.35); }
+  .inp { @apply w-full rounded-xl bg-fg/5 border border-fg/10 px-3 py-2 text-sm outline-none transition focus:border-primario focus:ring-2 focus:ring-primario/30 tnum; }
+  .tabla { @apply w-full text-sm tnum; }
+  .tabla th { @apply text-left text-xs font-semibold tracking-wide text-muted px-3 py-2 border-b border-fg/10 whitespace-nowrap; }
+  .tabla td { @apply px-3 py-2 border-b border-fg/5 whitespace-nowrap; }
+  .tabla tbody tr { @apply transition hover:bg-fg/5; }
+  .num { @apply text-right; }
+}
+
+*:focus-visible { outline: 2px solid #F3D58A; outline-offset: 2px; border-radius: 8px; }
+::-webkit-scrollbar { width: 8px; height: 8px; } ::-webkit-scrollbar-thumb { background: rgba(212,175,55,.28); border-radius: 8px; }
+.ruido { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E"); opacity: .05; }
+.presentacion { font-size: 118%; }
+.katex { font-size: 1.05em; }
+.espacio { background: radial-gradient(ellipse at 50% 45%, #2a1d05 0%, #060504 55%, #000000 100%); }
+.espacio::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .7;
+  background-image: radial-gradient(1px 1px at 12px 18px, #fff, transparent), radial-gradient(1px 1px at 70px 90px, #fff7e0, transparent),
+    radial-gradient(1.5px 1.5px at 140px 40px, #fff, transparent), radial-gradient(1px 1px at 190px 150px, #fde68a, transparent), radial-gradient(1px 1px at 40px 170px, #fff, transparent);
+  background-size: 220px 220px; }
+.maplibregl-ctrl-group { background: rgba(12,10,6,.7) !important; backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,.12); border-radius: 12px !important; overflow: hidden; }
+.maplibregl-ctrl-group button { width: 34px !important; height: 34px !important; } .maplibregl-ctrl-group button + button { border-top: 1px solid rgba(255,255,255,.1) !important; }
+.maplibregl-ctrl-group .maplibregl-ctrl-icon { filter: invert(1) brightness(1.6); }
+.maplibregl-ctrl-attrib { background: rgba(12,10,6,.6) !important; color: #a8a29e; font-size: 10px; } .maplibregl-ctrl-attrib a { color: #e7e5e4; }
+.nx-popup .maplibregl-popup-content { background: rgba(10,9,7,.92); color: #f8fafc; border: 1px solid rgba(255,255,255,.12); border-radius: 12px; padding: 8px 12px; font: 12px/1.45 Inter, sans-serif; backdrop-filter: blur(12px); box-shadow: 0 10px 30px rgba(0,0,0,.5); }
+.nx-popup .maplibregl-popup-tip { border-top-color: rgba(10,9,7,.92) !important; border-bottom-color: rgba(10,9,7,.92) !important; }
+@media print { .no-print { display: none !important; } body { background: white; } }
+.recharts-legend-wrapper { font-size: 12px; } .recharts-default-legend { padding-top: 6px !important; }
+
+/* ───────── Horizonte dorado: arco de luz con destello que lo recorre ───────── */
+.horizonte { position: absolute; left: 50%; width: var(--d, 1400px); height: var(--d, 1400px); transform: translateX(-50%); pointer-events: none; }
+.horizonte > div { position: absolute; inset: 0; border-radius: 9999px; }
+.horizonte-halo { inset: -18% !important; background: radial-gradient(42% 14% at 50% 18%, rgba(255,214,120,.42), rgba(212,175,55,.12) 55%, transparent 75%); filter: blur(24px); }
+.horizonte-disco { background: radial-gradient(circle at 50% 0%, #1c1405 0%, #070604 32%, #000 55%);
+  box-shadow: inset 0 2px 0 rgba(255,232,170,.95), inset 0 40px 80px -30px rgba(212,175,55,.6), 0 -12px 70px rgba(212,175,55,.38), 0 -2px 22px rgba(255,214,120,.55); }
+.horizonte-barrido { background: conic-gradient(from 0deg, transparent 0deg, rgba(255,240,195,.95) 14deg, rgba(212,175,55,.5) 30deg, transparent 52deg);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px)); mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #000 calc(100% - 2px)); }
+.horizonte-brillo { background: conic-gradient(from 0deg, transparent 0deg, rgba(255,214,120,.45) 16deg, transparent 50deg); filter: blur(10px);
+  -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 26px), #000 calc(100% - 6px)); mask: radial-gradient(farthest-side, transparent calc(100% - 26px), #000 calc(100% - 6px)); }
+:root:not(.dark) .horizonte-disco { background: radial-gradient(circle at 50% 0%, #fff6df 0%, #fbf3e0 40%, #f6ecd6 60%); }
+/* Haces de luz diagonales del fondo */
+.haz { background: linear-gradient(90deg, transparent, rgba(255,220,140,.075), transparent); filter: blur(10px); }
+:root:not(.dark) .haz { background: linear-gradient(90deg, transparent, rgba(212,175,55,.10), transparent); }
+/* Texto dorado metálico */
+.texto-oro { background: linear-gradient(180deg, #FFF3CF 0%, #F3D58A 35%, #D4AF37 65%, #9C7420 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+:root:not(.dark) .texto-oro { background: linear-gradient(180deg, #B8890F 0%, #8A6508 100%); -webkit-background-clip: text; background-clip: text; }
+/* Meridianos del globo dibujado: ilusión de rotación */
+.meridiano { transform-box: fill-box; transform-origin: center; animation: meridiano 8s linear infinite; }
+@keyframes meridiano { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(0.02); } }
+@media (prefers-reduced-motion: reduce) { .meridiano, .animate-barrido, .animate-destello, .animate-orbe { animation: none !important; } }

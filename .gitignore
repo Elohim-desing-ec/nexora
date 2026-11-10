@@ -1,0 +1,8 @@
+node_modules
+dist
+*.tsbuildinfo
+.playwright-mcp
+# Material interno de la exposición (incluye contraseñas del equipo)
+GUIA_PRESENTACION.md
+.DS_Store
+.env*
