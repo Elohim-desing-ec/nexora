@@ -83,7 +83,7 @@ export default function Landing() {
       {/* Navegación */}
       <motion.nav className="fixed inset-x-0 top-0 z-40 border-b border-primario/10 bg-black/40 backdrop-blur-xl" initial={{ y: -80 }} animate={{ y: 0 }} transition={{ delay: 0.2, duration: 0.8, ease: suave }}>
         <div className="mx-auto flex max-w-7xl items-center gap-6 px-4 py-3 sm:px-6"><Logo size={30} />
-          <div className="ml-6 hidden gap-6 text-sm text-muted md:flex">{[['Funciones', '#funciones'], ['Objetivos', '#objetivos'], ['Economía', '#economia'], ['Cómo empezar', '#empezar']].map(([t, h]) => <a key={t} href={h} onClick={(e) => { e.preventDefault(); document.querySelector(h)?.scrollIntoView({ behavior: 'smooth' }) }} className="transition hover:text-fg">{t}</a>)}</div>
+          <div className="ml-6 hidden gap-6 text-sm text-muted md:flex">{[['Funciones', '#funciones'], ['Objetivos', '#objetivos'], ['Inversión', '#inversion'], ['Economía', '#economia'], ['Cómo empezar', '#empezar']].map(([t, h]) => <a key={t} href={h} onClick={(e) => { e.preventDefault(); document.querySelector(h)?.scrollIntoView({ behavior: 'smooth' }) }} className="transition hover:text-fg">{t}</a>)}</div>
           <button onClick={ingresar} className="ml-auto flex items-center gap-2 rounded-full bg-gradient-to-r from-amber-200 via-primario to-violeta px-5 py-2 text-sm font-semibold text-black shadow-[0_8px_30px_-6px_rgba(212,175,55,.6)] transition hover:brightness-110">Ingresar <ArrowRight size={15} /></button>
         </div>
       </motion.nav>
@@ -153,6 +153,21 @@ export default function Landing() {
             </div>
           </motion.div>
         </div>
+      </section>
+
+      {/* Inversión y clientes potenciales */}
+      <section id="inversion" className="relative mx-auto grid max-w-6xl scroll-mt-24 gap-6 px-4 py-20 lg:grid-cols-2">
+        <Revelar><div className="glass h-full p-6 sm:p-8">
+          <h2 className="font-display text-2xl font-bold sm:text-3xl">Costo de <span className="texto-oro">adquisición</span></h2>
+          <ul className="mt-6 space-y-3 text-sm">{[['Licencia', p.licencia], ['Implementación', p.implementacion], ['Capacitación', p.capacitacion]].map(([t, v]) => <li key={t as string} className="flex justify-between border-b border-fg/10 pb-2"><span className="text-muted">{t}</span><span className="tnum">{money(v as number, 0)}</span></li>)}
+            <li className="flex justify-between pt-1 text-base font-semibold"><span>Inversión total</span><span className="texto-oro font-display text-2xl tnum">{money(F.inversion(p), 0)}</span></li></ul>
+          <p className="mt-4 text-xs text-muted">Se recupera en {num(K.recSimple)} años con un ahorro de {money(K.A, 0)} por año.</p>
+        </div></Revelar>
+        <Revelar retraso={0.12}><div className="glass h-full p-6 sm:p-8">
+          <h2 className="font-display text-2xl font-bold sm:text-3xl">Clientes <span className="texto-oro">potenciales</span></h2>
+          <div className="mt-6 flex flex-wrap gap-2">{['Distribuidoras', 'Cadenas de retail', 'Supermercados', 'Farmacias', 'Ferreterías', 'Industrias', 'Operadores logísticos', 'Repuestos', 'Emprendimientos con bodega'].map((c) => <span key={c} className="rounded-full border border-primario/25 bg-primario/10 px-3 py-1.5 text-xs">{c}</span>)}</div>
+          <p className="mt-5 text-sm leading-relaxed text-muted">Cualquier empresa que maneje inventario y hoy use un software antiguo, con errores de stock, mantenimiento constante y soporte caro: desde una sola tienda hasta redes con sucursales en varios países.</p>
+        </div></Revelar>
       </section>
 
       {/* Economía: veredicto */}

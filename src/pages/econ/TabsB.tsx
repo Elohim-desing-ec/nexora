@@ -25,6 +25,20 @@ export function Depreciacion() {
   const cambio = F.sddConCambio(P, p.S, p.n).anioCambio
   const t = tablas[ver]
   return <>
+    <Card titulo="Terminología de depreciación">
+      <div className="grid gap-2 text-sm sm:grid-cols-2 xl:grid-cols-4">{([
+        ['Costo inicial (P)', `Lo que se paga para poner el activo en uso: ${money(P)}.`],
+        ['Valor residual (S)', `Valor estimado al final de la vida útil: ${money(p.S)}.`],
+        ['Vida útil (n)', `Años en que se reparte el costo: ${p.n} años.`],
+        ['Base depreciable', `P − S = ${money(P - p.S)}: lo que se deprecia en total.`],
+        ['Depreciación (Dₜ)', 'Parte del costo que se reconoce como gasto en el año t. No es salida de dinero.'],
+        ['Depreciación acumulada', 'Suma de las depreciaciones hasta el año t.'],
+        ['Valor en libros (VLₜ)', 'P − depreciación acumulada. Nunca baja del valor residual.'],
+        ['Tasa de depreciación (d)', 'Fracción que se deprecia cada año: 1/n en línea recta, f/n en saldo decreciente.'],
+        ['Valor de mercado', 'Lo que pagarían hoy por el activo. Puede ser distinto del valor en libros.'],
+        ['Escudo fiscal', `Impuesto que se ahorra: Dₜ × T (T = ${pct(p.impuesto, 0)}).`],
+      ] as const).map(([t, d]) => <div key={t} className="rounded-xl bg-fg/5 p-3"><div className="font-semibold text-cian">{t}</div><p className="mt-0.5 text-xs text-muted">{d}</p></div>)}</div>
+    </Card>
     <Card titulo="Métodos a comparar">
       <div className="flex flex-wrap gap-2">{METODOS.map((m) => <label key={m} className={cx('flex cursor-pointer items-center gap-2 rounded-xl border px-3 py-1.5 text-xs', sel.includes(m) ? 'border-primario/50 bg-primario/15' : 'border-fg/10 bg-fg/5')}><input type="checkbox" className="accent-amber-500" checked={sel.includes(m)} onChange={() => setSel(sel.includes(m) ? sel.filter((x) => x !== m) : [...sel, m])} />{F.NOMBRE_DEP[m]}{m === 'SD' && ` (${num(p.factorSD, 1)}/n)`}{m === 'MACRS' && ` ${p.macrsClase} años`}</label>)}</div>
       <p className="mt-3 text-xs text-muted">P = {money(P)} · S = {money(p.S)} · n = {p.n} · T = {pct(p.impuesto, 0)}. Cambie el factor del saldo decreciente (2 = doble, 1,5 = 150 %) o la clase MACRS en Parámetros. {cambio ? `SDD con cambio a LR: el cambio ocurre en el año ${cambio}.` : 'SDD con cambio a LR: con estos datos el cambio NO ocurre (el SDD llega antes al valor residual).'}</p>
