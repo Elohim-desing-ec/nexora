@@ -17,13 +17,15 @@ No necesita backend: los datos se guardan en el navegador (localStorage). Al abr
 
 El sistema **arranca sin datos de demostración**: la empresa carga sus datos reales.
 
-**Ingreso:** usuario `eduardo` / contraseña `eduardo2026` (Gerente General). El resto del equipo: `kattia`, `emilio`, `holger`, `emily`, `christopher` (contraseña = usuario + `2026`, rol Ayudante).
+**Ingreso:** usuario `eduardo` / contraseña `eduardo2026` (Gerente General). Resto del equipo (contraseña = usuario + `2026`): `emily` Analista Financiero · `kattia` Contador · `holger` Jefe de Compras · `emilio` Jefe de Bodega · `christopher` Auditor.
 
 | Rol | Ve |
 |---|---|
 | Gerente General | Todo + **Configuración** (usuarios y datos) |
-| Jefe de Bodega | Dashboard, Inventario, Compras, Reportes, IA |
-| Analista Financiero | Dashboard, Compras, Reportes, Análisis económico, IA |
+| Analista Financiero | Dashboard, Red global, Compras (aprueba órdenes), Reportes, Análisis económico, IA |
+| Contador | Dashboard, Red global, Inventario, Trazabilidad, Reportes, Análisis económico |
+| Jefe de Compras | Dashboard, Red global, Inventario, Compras (crea órdenes), Reportes, IA |
+| Jefe de Bodega | Dashboard, Red global, Inventario, Compras (recibe órdenes), Reportes, IA |
 | Auditor | Dashboard, Inventario (solo lectura), Trazabilidad, Reportes, Análisis económico |
 | Ayudante | Dashboard, Inventario, Reportes |
 

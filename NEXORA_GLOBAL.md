@@ -135,7 +135,7 @@ En el caso base del análisis económico, estos problemas cuestan **$ 19.800 al 
 
 - **Es una aplicación web**: no se instala; se abre en el navegador.
 - **Funciona sin internet** para la operación diaria (inventario, ventas, IA, análisis económico). Solo el globo, la búsqueda de direcciones y los tipos de cambio necesitan conexión.
-- **Seguridad por roles**: Gerente General, Jefe de Bodega, Analista Financiero, Auditor y Ayudante; cada uno ve solo lo que le corresponde. Todo queda en la bitácora de auditoría.
+- **Seguridad por roles**: Gerente General, Analista Financiero, Contador, Jefe de Compras, Jefe de Bodega, Auditor y Ayudante; cada uno ve solo lo que le corresponde. Todo queda en la bitácora de auditoría.
 
 ---
 

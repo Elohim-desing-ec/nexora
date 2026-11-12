@@ -3,8 +3,8 @@ import { persist, createJSONStorage, type StateStorage } from 'zustand/middlewar
 import { get as idbGet, set as idbSet, del as idbDel } from 'idb-keyval'
 import { EMPRESA_BASE, type Empresa, type Evento, type Movimiento, type Orden, type Producto, type Proveedor, type Sucursal, type SucursalId, type EstadoOC } from '../data/base'
 
-export type Rol = 'Gerente General' | 'Jefe de Bodega' | 'Analista Financiero' | 'Auditor' | 'Ayudante'
-export const ROLES: Rol[] = ['Gerente General', 'Jefe de Bodega', 'Analista Financiero', 'Auditor', 'Ayudante']
+export type Rol = 'Gerente General' | 'Analista Financiero' | 'Contador' | 'Jefe de Compras' | 'Jefe de Bodega' | 'Auditor' | 'Ayudante'
+export const ROLES: Rol[] = ['Gerente General', 'Analista Financiero', 'Contador', 'Jefe de Compras', 'Jefe de Bodega', 'Auditor', 'Ayudante']
 export type Pagina = 'dashboard' | 'red' | 'productos' | 'compras' | 'ia' | 'auditoria' | 'reportes' | 'economico' | 'configuracion'
 /** usuario = nombre corto para iniciar sesión (ej. "eduardo"). */
 export interface Usuario { id: string; nombre: string; usuario: string; rol: Rol; email: string; clave: string }
@@ -13,17 +13,21 @@ export interface Usuario { id: string; nombre: string; usuario: string; rol: Rol
 const equipo = (id: string, nombre: string, usuario: string, rol: Rol): Usuario => ({ id, nombre, usuario, rol, email: '', clave: `${usuario}2026` })
 export const USUARIOS: Usuario[] = [
   equipo('u1', 'Eduardo Lara Pincay', 'eduardo', 'Gerente General'),
-  equipo('u2', 'Kattia Arreaga Castro', 'kattia', 'Ayudante'),
-  equipo('u3', 'Emilio Espinoza Escobar', 'emilio', 'Ayudante'),
-  equipo('u4', 'Holger Ferruzola Lucas', 'holger', 'Ayudante'),
-  equipo('u5', 'Emily Hidalgo Castro', 'emily', 'Ayudante'),
-  equipo('u6', 'Christopher Martínez Bastidas', 'christopher', 'Ayudante'),
+  equipo('u2', 'Kattia Arreaga Castro', 'kattia', 'Contador'),
+  equipo('u3', 'Emilio Espinoza Escobar', 'emilio', 'Jefe de Bodega'),
+  equipo('u4', 'Holger Ferruzola Lucas', 'holger', 'Jefe de Compras'),
+  equipo('u5', 'Emily Hidalgo Castro', 'emily', 'Analista Financiero'),
+  equipo('u6', 'Christopher Martínez Bastidas', 'christopher', 'Auditor'),
 ]
+/** Rol de cada integrante del equipo (para actualizar datos ya guardados que aún dicen "Ayudante"). */
+const ROL_EQUIPO: Record<string, Rol> = Object.fromEntries(USUARIOS.map((u) => [u.id, u.rol]))
 
 export const PERMISOS: Record<Rol, Pagina[]> = {
   'Gerente General': ['dashboard', 'red', 'productos', 'compras', 'ia', 'auditoria', 'reportes', 'economico', 'configuracion'],
   'Jefe de Bodega': ['dashboard', 'red', 'productos', 'compras', 'ia', 'reportes'],
   'Analista Financiero': ['dashboard', 'red', 'compras', 'ia', 'reportes', 'economico'],
+  Contador: ['dashboard', 'red', 'productos', 'auditoria', 'reportes', 'economico'],
+  'Jefe de Compras': ['dashboard', 'red', 'productos', 'compras', 'ia', 'reportes'],
   Auditor: ['dashboard', 'red', 'productos', 'auditoria', 'reportes', 'economico'],
   Ayudante: ['dashboard', 'red', 'productos', 'reportes'],
 }
@@ -224,17 +228,21 @@ export const useApp = create<AppState>()(persist((set, get) => {
     restaurar: (d) => { set({ ...d }); log('Respaldo restaurado', `${d.productos.length} productos`) },
   }
 }, {
-  name: 'nexora-app', version: 4,
+  name: 'nexora-app', version: 5,
   storage: createJSONStorage(() => almacen),
   partialize: (s) => ({ ...s, presentacion: false }),
   migrate: (old, v) => {
-    const o = (old ?? {}) as Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
+    let o = (old ?? {}) as Record<string, any> // eslint-disable-line @typescript-eslint/no-explicit-any
     if (v < 3) return { tema: o.tema ?? 'oscuro' } as unknown as AppState // v3: sin datos de demostración
-    if (v < 4) return { // v4: empresa global y sucursales ilimitadas
+    if (v < 4) o = { // v4: empresa global y sucursales ilimitadas
       ...o,
       empresa: { ...EMPRESA_BASE, nombre: o.empresa?.nombre ?? '', idFiscal: o.empresa?.ruc ?? '', telefono: o.empresa?.telefono ?? '' },
       sucursales: (o.sucursales ?? []).map((x: Sucursal, i: number) => ({ ...x, tipo: i === 0 ? 'Matriz' : 'Sucursal', pais: 'EC', activa: true })),
-    } as unknown as AppState
+    }
+    if (v < 5) { // v5: cada integrante del equipo con su propio rol (antes "Ayudante")
+      const rol = (u: Usuario | null) => (u && u.rol === 'Ayudante' && ROL_EQUIPO[u.id] ? { ...u, rol: ROL_EQUIPO[u.id] } : u)
+      o = { ...o, usuarios: (o.usuarios ?? USUARIOS).map(rol), usuario: rol(o.usuario ?? null) }
+    }
     return o as unknown as AppState
   },
 }))

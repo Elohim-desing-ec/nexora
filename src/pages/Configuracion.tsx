@@ -18,7 +18,7 @@ const ve = (rol: Usuario['rol']) => MENU.filter((m) => PERMISOS[rol].includes(m.
 function Usuarios() {
   const { usuarios, usuario, guardarUsuario, eliminarUsuario } = useApp()
   const [edit, setEdit] = useState<Usuario | null>(null), [err, setErr] = useState('')
-  const tono = { 'Gerente General': 'violeta', 'Jefe de Bodega': 'azul', 'Analista Financiero': 'cian', Auditor: 'ambar', Ayudante: 'verde' } as const
+  const tono = { 'Gerente General': 'violeta', 'Analista Financiero': 'cian', Contador: 'verde', 'Jefe de Compras': 'azul', 'Jefe de Bodega': 'azul', Auditor: 'ambar', Ayudante: 'gris' } as const
   return <>
     <Card titulo={`Usuarios del sistema (${usuarios.length})`} accion={<Button variante="primario" onClick={() => { setErr(''); setEdit({ id: crypto.randomUUID(), nombre: '', usuario: '', email: '', rol: 'Ayudante', clave: '' }) }}><Plus size={15} />Agregar persona</Button>}>
       <Scroll><table className="tabla"><thead><tr><th>Nombre</th><th>Usuario</th><th>Rol</th><th>Puede ver</th><th /></tr></thead>
